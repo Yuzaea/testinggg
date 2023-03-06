@@ -43,11 +43,42 @@ namespace HotelDB23
                 case "2":
                     CreateHotel();
                     return true;
+                case "3":
+                    DeleteHotel();
+                    return true;
+                case "4":
+                    GetHotelID();
+                    return true;
+                case "5":
+                case "6":
+                case "7":
+                case "8":
+                case "9":
                 case "Q":
                 case "q": return false;
                 default: return true;
             }
 
+        }
+
+        private static void GetHotelID()
+        {
+            Console.Clear();
+            Console.WriteLine("Indlæs hotelnr på søgte Hotel");
+            int hotelNo = int.Parse (Console.ReadLine());
+            HotelService hs = new HotelService();
+            Hotel foundHotel = hs.GetHotelFromId(hotelNo);
+
+            if (foundHotel!= null)
+            {
+                Console.WriteLine(foundHotel.ToString());
+
+            }
+            else
+            {
+                Console.WriteLine("Shit dont fucking exist");
+            }
+            Console.ReadKey();
         }
 
         private static void ShowHotels()
@@ -85,6 +116,33 @@ namespace HotelDB23
                 Console.WriteLine("Fejl. Hotellet blev ikke oprettet!");
             }
         }
+
+
+        private static Hotel DeleteHotel()
+        {
+            Console.Clear();
+            Console.WriteLine("Indlæs hotelnr på det Hotel der skal slettes");
+            int hotelNo = int.Parse(Console.ReadLine());
+            HotelService hs = new HotelService();
+            Hotel foundHotel = hs.DeleteHotel(hotelNo);
+
+            if (foundHotel != null)
+            {
+                Console.WriteLine(foundHotel.ToString());
+
+            }
+            else
+            {
+                Console.WriteLine("Shit dont fucking exist");
+            }
+            Console.WriteLine("Hotel slettet");
+            Console.ReadKey();
+
+
+
+            return null;
+        }
+
 
         
 
