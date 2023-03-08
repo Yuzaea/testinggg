@@ -20,6 +20,7 @@ namespace HotelDB23
             Console.WriteLine("\t2)\t Opret nyt Hotel");
             Console.WriteLine("\t3)\t Fjern Hotel");
             Console.WriteLine("\t4)\t Søg efter hotel udfra hotelnr");
+            Console.WriteLine("\t4a)\t Søg efter hotel udfra Hotel.Name");
             Console.WriteLine("\t5)\t Opdater et hotel");
             Console.WriteLine("\t6)\t List alle værelser");
             Console.WriteLine("\t7)\t List alle værelser til et bestemt hotel");
@@ -49,9 +50,16 @@ namespace HotelDB23
                 case "4":
                     GetHotelID();
                     return true;
+                case "4a":
+                    GetHotelName();
+                    return true;
                 case "5":
+                    UpdateHotel();
+                    return true;
                 case "6":
                 case "7":
+                    ShowRoom();
+                    return true;
                 case "8":
                 case "9":
                 case "Q":
@@ -65,11 +73,11 @@ namespace HotelDB23
         {
             Console.Clear();
             Console.WriteLine("Indlæs hotelnr på søgte Hotel");
-            int hotelNo = int.Parse (Console.ReadLine());
+            int hotelNo = int.Parse(Console.ReadLine());
             HotelService hs = new HotelService();
             Hotel foundHotel = hs.GetHotelFromId(hotelNo);
 
-            if (foundHotel!= null)
+            if (foundHotel != null)
             {
                 Console.WriteLine(foundHotel.ToString());
 
@@ -80,6 +88,30 @@ namespace HotelDB23
             }
             Console.ReadKey();
         }
+        private static void GetHotelName()
+        {
+            Console.Clear();
+            Console.WriteLine("Indlæs Name på søgte Hotel");
+            string hotelName = Console.ReadLine();
+            HotelService hs = new HotelService();
+            List<Hotel> hotels = hs.GetHotelsByName(hotelName);
+
+            if (hotels != null)
+            {
+                foreach (Hotel hotel in hotels)
+                {
+                    Console.WriteLine($"HotelNr {hotel.HotelNr} Name {hotel.Navn} Address {hotel.Adresse}");
+
+                }
+                Console.ReadKey();
+            }
+            else
+            {
+                Console.WriteLine("Shit dont fucking exist");
+            }
+            Console.ReadKey();
+        }
+
 
         private static void ShowHotels()
         {
@@ -91,6 +123,30 @@ namespace HotelDB23
                 Console.WriteLine($"HotelNr {hotel.HotelNr} Name {hotel.Navn} Address {hotel.Adresse}");
             }
             Console.ReadKey();
+        }
+        private static void ShowRoom()
+        {
+
+
+            Console.Clear();
+            Console.WriteLine("Indlæs hotelnr på søgte rooms");
+            int hotelNo = int.Parse(Console.ReadLine());
+            HotelService hs = new HotelService();
+            Hotel foundHotel = hs.GetHotelFromId(hotelNo);
+
+            if (foundHotel != null)
+            {
+                RoomService rs = new RoomService();
+                List<Room> rooms = rs.GetAllRoom(hotelNo);
+                foreach (Room room in rooms)
+                {
+                    Console.WriteLine($"HotelNr {room.HotelNr} Type {room.Types} Price {room.Pris} Room number {room.RoomNr}");
+                }
+                Console.ReadKey();
+
+            }
+            Console.Clear();
+
         }
 
         private static void CreateHotel()
@@ -144,9 +200,38 @@ namespace HotelDB23
         }
 
 
-        
+        private static void UpdateHotel()
+        {
+            Console.Clear();
+            Console.WriteLine("Indlæs hotelnr på søgte Hotel");
+            int hotelNo = int.Parse(Console.ReadLine());
+            HotelService hs = new HotelService();
+            Hotel foundHotel = hs.GetHotelFromId(hotelNo);
+            if (foundHotel != null)
+            {
+                
+                Console.WriteLine("Updater hotelnavn");
+               
+                string navn = Console.ReadLine();
+                Console.WriteLine("Updater hotel adresse");
+                string Addresse = Console.ReadLine();
+                
+                hs.UpdateHotel(new Hotel(hotelNo, navn, Addresse), hotelNo);
+            }
+            else
+            {
+                Console.WriteLine("Shit dont fucking exist");
+            }
 
-        private async static Task ShowHotelsAsync()
+        }
+
+
+
+
+
+
+
+            private async static Task ShowHotelsAsync()
         {
             //Console.Clear();
             //HotelServiceAsync hs = new HotelServiceAsync();
